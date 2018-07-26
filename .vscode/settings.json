@@ -1,0 +1,30 @@
+{
+  // Visual Studio Code extensions:
+  // https://marketplace.visualstudio.com/items?itemName=formulahendry.auto-close-tag
+  // https://marketplace.visualstudio.com/items?itemName=silvenon.mdx
+  // https://marketplace.visualstudio.com/items?itemName=eg2.tslint
+  // https://marketplace.visualstudio.com/items?itemName=christian-kohler.path-intellisense
+
+  "editor.tabSize": 2,
+  "editor.insertSpaces": true,
+
+  "html.suggest.angular1": false,
+  "html.suggest.ionic": false,
+
+  // install "Git for Windows" to get it running on Windows
+  "terminal.integrated.shell.windows": "bash.exe",
+  "terminal.integrated.shellArgs.windows": ["--login", "-i"],
+
+  "files.exclude": {
+    "**/.git": true,
+    "**/.DS_Store": true
+  },
+
+  "auto-close-tag.activationOnLanguage": [
+    "typescript",
+    "typescriptreact",
+    "mdx"
+  ],
+
+  "tslint.exclude": "**/node_modules/**"
+}
