@@ -33,6 +33,7 @@ export class TodoList extends React.Component<TodoListProps, TodoListState> {
         />
       );
     }
+    return null;
   }
 
   render() {

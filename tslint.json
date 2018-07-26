@@ -1,0 +1,21 @@
+{
+  "extends": [],
+  "rules": {
+    "await-promise": { "severity": "warn" },
+    "no-duplicate-super": { "severity": "error" },
+    "no-duplicate-switch-case": { "severity": "error" },
+    "no-duplicate-variable": { "severity": "error" },
+    "no-eval": { "severity": "error" },
+    "no-invalid-this": { "severity": "error" },
+    "no-require-imports": { "severity": "warn" },
+    "no-this-assignment": { "severity": "error" },
+    "no-unbound-method": { "severity": "warn" },
+    "no-unsafe-finally": { "severity": "warn" },
+    "no-use-before-declare": { "severity": "error" },
+    "no-var-keyword": { "severity": "error" },
+    "no-void-expression": { "severity": "error" },
+    "use-isnan": { "severity": "error" }
+  },
+  "jsRules": {},
+  "rulesDirectory": []
+}

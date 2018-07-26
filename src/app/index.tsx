@@ -5,7 +5,7 @@ import { Root } from 'app/containers/Root';
 import { TodoApp } from 'app/containers/TodoApp';
 
 // render react DOM
-export const App = hot(module)(({ history }) => (
+export const App = hot(module)(({ history } : any) => (
   <Root>
     <Router history={history}>
       <Switch>

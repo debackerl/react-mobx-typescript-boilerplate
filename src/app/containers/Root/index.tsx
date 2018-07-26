@@ -6,6 +6,7 @@ export class Root extends React.Component<any, any> {
       const DevTools = require('mobx-react-devtools').default;
       return <DevTools />;
     }
+    return null;
   }
 
   render() {

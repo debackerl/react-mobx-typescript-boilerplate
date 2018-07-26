@@ -56,6 +56,7 @@ export class Footer extends React.Component<FooterProps, FooterState> {
         <button className={style.clearCompleted} onClick={onClearCompleted} />
       );
     }
+    return null;
   }
 
   render() {

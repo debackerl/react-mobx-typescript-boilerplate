@@ -36,7 +36,7 @@ See also: [react-redux-typescript-boilerplate](https://github.com/rokoroku/react
 ## Setup
 
 ```
-$ npm install
+$ npm ci
 ```
 
 ## Running
@@ -56,6 +56,17 @@ $ npm run build
 ```
 $ npm run prettier
 ```
+
+## Upgrade packages
+
+```
+$ npm install
+```
+
+## Review size of bundle
+
+1. ```webpack --json > stats.json```
+2. https://chrisbateman.github.io/webpack-visualizer/
 
 # License
 

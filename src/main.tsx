@@ -1,3 +1,5 @@
+// Script first executed in browser, containing initialization code
+
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import { useStrict } from 'mobx';
@@ -22,6 +24,8 @@ const rootStore = createStores(history, defaultTodos);
 
 // render react DOM
 ReactDOM.render(
+  // Provider put a reference to each 'store' in the React context,
+  // any component can use it by using @inject
   <Provider {...rootStore}>
     <App history={history} />
   </Provider>,
