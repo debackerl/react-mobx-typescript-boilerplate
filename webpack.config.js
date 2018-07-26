@@ -16,7 +16,7 @@ var outPath = path.join(__dirname, './dist');
 module.exports = {
   context: sourcePath,
   entry: {
-    main: './main.tsx' // all entry points used by app, typically one per 'start' page
+    main: './app/index.tsx' // all entry points used by app, typically one per 'start' page
   },
   output: {
     path: outPath,
@@ -26,7 +26,7 @@ module.exports = {
   },
   target: 'web',
   resolve: {
-    extensions: ['.js', '.ts', '.tsx'], // extensions used for module resolution
+    extensions: ['.js', '.ts', '.tsx', '.mdx', '.css'], // extensions used for module resolution
     // Fix webpack's default behavior to not load packages with jsnext:main module
     // (jsnext:main directs not usually distributable es6 format, but es6 sources)
     mainFields: ['module', 'browser', 'main'],
@@ -49,6 +49,19 @@ module.exports = {
         use: isProduction
           ? 'ts-loader'
           : ['babel-loader?plugins=react-hot-loader/babel', 'ts-loader']
+      },
+      // .mdx
+      // Loader converting Markdown files to React components.
+      // Generated code is ES2015 to be converted by Babel.
+      // For use to write text pages only, no static typing is performed.
+      // Intro: http://jamesknelson.com/introducing-mdxc/
+      // Manual: https://github.com/jamesknelson/mdxc
+      // Syntax: http://mdxc.reactarmory.com/examples/basics/
+      {
+        test: /\.mdx?$/,
+        use: isProduction
+          ? ['babel-loader', 'mdx-loader']
+          : ['babel-loader?plugins=react-hot-loader/babel', 'mdx-loader']
       },
       // css from modules
       {

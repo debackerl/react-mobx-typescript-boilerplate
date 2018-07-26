@@ -10,9 +10,9 @@ See also: [react-redux-typescript-boilerplate](https://github.com/rokoroku/react
 
 ## Contains
 
-- [x] [Typescript](https://www.typescriptlang.org/) 2.7
-- [x] [React](https://facebook.github.io/react/) 16
-- [x] [React Router](https://github.com/ReactTraining/react-router) 4.2
+- [x] [Typescript](https://www.typescriptlang.org/)
+- [x] [React](https://facebook.github.io/react/)
+- [x] [React Router](https://github.com/ReactTraining/react-router)
 - [x] [Mobx](https://github.com/mobxjs/mobx)
 - [x] [Mobx React](https://github.com/mobxjs/mobx-react)
 - [x] [Mobx React Router](https://github.com/alisd23/mobx-react-router/)
@@ -21,7 +21,7 @@ See also: [react-redux-typescript-boilerplate](https://github.com/rokoroku/react
 
 ### Build tools
 
-- [x] [Webpack](https://webpack.github.io) 4
+- [x] [Webpack](https://webpack.github.io)
   - [x] [Tree Shaking](https://webpack.js.org/guides/tree-shaking/)
   - [x] [Webpack Dev Server](https://github.com/webpack/webpack-dev-server)
 - [x] [Typescript Loader](https://github.com/TypeStrong/ts-loader)
@@ -67,6 +67,10 @@ $ npm install
 
 1. ```webpack --json > stats.json```
 2. https://chrisbateman.github.io/webpack-visualizer/
+
+# Links
+
+https://github.com/sw-yx/react-typescript-cheatsheet
 
 # License
 
