@@ -33,8 +33,8 @@ ReactDOM.render(
     <Root>
       <Router history={history}>
         <Switch>
-          <Route path="/" component={TodoApp} />
           <Route path="/about" component={AboutApp} />
+          <Route component={TodoApp} />
         </Switch>
       </Router>
     </Root>
