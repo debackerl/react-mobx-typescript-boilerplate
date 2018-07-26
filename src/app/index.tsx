@@ -9,7 +9,7 @@ import { TodoModel } from 'app/models';
 import { createStores } from 'app/stores';
 import { Router, Route, Switch } from 'react-router';
 import { Root } from 'app/containers/Root';
-import AboutApp from 'app/containers/AboutPage.mdx';
+import AboutPage from 'app/containers/pages/AboutPage.mdx';
 import { TodoApp } from 'app/containers/TodoApp';
 
 // enable MobX strict mode
@@ -33,7 +33,7 @@ ReactDOM.render(
     <Root>
       <Router history={history}>
         <Switch>
-          <Route path="/about" component={AboutApp} />
+          <Route path="/about" component={AboutPage} />
           <Route component={TodoApp} />
         </Switch>
       </Router>
