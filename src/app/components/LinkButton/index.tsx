@@ -6,21 +6,17 @@ export interface ILinkButtonProps extends IButtonProps {
   to: string;
 }
 
-class _LinkButton extends React.Component<ILinkButtonProps & RouteComponentProps<any>> {
-  render() { 
-    const { onClick, to, history } = this.props;
-    return (
-      <Button
-        {...this.props}
-        onClick={(event: React.MouseEvent<HTMLElement>) => {
-          if(onClick) onClick(event);
-          history.push(to);
-        }}
-      />
-    );
-  }
-}
-
-export const LinkButton = withRouter(_LinkButton);
+export const LinkButton = withRouter((props: ILinkButtonProps & RouteComponentProps<any>) => {
+  const { onClick, to, history } = props;
+  return (
+    <Button
+      {...props}
+      onClick={(event: React.MouseEvent<HTMLElement>) => {
+        if(onClick) onClick(event);
+        history.push(to);
+      }}
+    />
+  );
+});
 
 export default LinkButton;
