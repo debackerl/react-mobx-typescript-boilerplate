@@ -1,4 +1,4 @@
-// Script first executed in browser, containing initialization code
+// routes shared by client- and server-sides
 
 import * as React from 'react';
 import { Route, Switch } from 'react-router';
