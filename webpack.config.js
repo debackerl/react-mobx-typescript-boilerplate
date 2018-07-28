@@ -16,7 +16,7 @@ var outPath = path.join(__dirname, './dist');
 module.exports = {
   context: sourcePath,
   entry: {
-    main: './app/index.tsx' // all entry points used by app, typically one per 'start' page
+    main: './client.tsx' // all entry points used by app, typically one per 'start' page
   },
   output: {
     path: outPath,
