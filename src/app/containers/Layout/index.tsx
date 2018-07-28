@@ -3,7 +3,7 @@ import * as React from 'react';
 import { Alignment, Navbar, NavbarGroup, NavbarHeading, NavbarDivider } from '@blueprintjs/core';
 import { LinkButton } from 'app/components';
 
-export class Root extends React.Component<any, any> {
+export class Layout extends React.Component<any, any> {
   render() {
     return (
       <div>

@@ -9,7 +9,7 @@ import { TodoModel } from 'app/models';
 import { createStores } from 'app/stores';
 import { Router, Route, Switch } from 'react-router';
 import { Root } from 'app/containers/Root';
-import AboutPage from 'app/containers/pages/AboutPage.mdx';
+import { AboutPage } from 'app/pages';
 import { TodoApp } from 'app/containers/TodoApp';
 
 // enable MobX strict mode
