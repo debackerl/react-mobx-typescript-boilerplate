@@ -8,6 +8,7 @@ export interface ILinkButtonProps extends IButtonProps {
 
 export const LinkButton = withRouter((props: ILinkButtonProps & RouteComponentProps<any>) => {
   const { onClick, to, history } = props;
+  // TODO: only return properties from IButtonProps to spread operator
   return (
     <Button
       {...props}

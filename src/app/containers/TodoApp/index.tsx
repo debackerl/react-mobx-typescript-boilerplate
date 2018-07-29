@@ -11,8 +11,9 @@ import { Layout } from 'app/containers/Layout';
 import { Header } from 'app/components/Header';
 import { TodoList } from 'app/components/TodoList';
 import { Footer } from 'app/components/Footer';
-import { TodoStore, RouterStore } from 'app/stores';
+import { AppStore, TodoStore, RouterStore } from 'app/stores';
 import {
+  STORE_APP,
   STORE_TODO,
   STORE_ROUTER,
   TODO_FILTER_LOCATION_HASH,
@@ -21,6 +22,7 @@ import {
 
 export interface TodoAppProps extends RouteComponentProps<any> {
   /** MobX Stores will be injected via @inject() **/
+  [STORE_APP]: AppStore;
   [STORE_ROUTER]: RouterStore;
   [STORE_TODO]: TodoStore;
 }
@@ -29,7 +31,7 @@ export interface TodoAppState {
   filter: TodoFilter;
 }
 
-@inject(STORE_TODO, STORE_ROUTER)
+@inject(STORE_APP, STORE_TODO, STORE_ROUTER)
 @observer
 export class TodoApp extends React.Component<TodoAppProps, TodoAppState> {
   constructor(props: TodoAppProps, context: any) {
@@ -39,6 +41,11 @@ export class TodoApp extends React.Component<TodoAppProps, TodoAppState> {
 
   componentWillMount() {
     this.checkLocationChange();
+  }
+
+  componentDidMount() {
+    const appStore = this.props[STORE_APP] as AppStore;
+    appStore.setTitle("Todo list");
   }
 
   componentWillReceiveProps(nextProps: TodoAppProps, nextContext: any) {

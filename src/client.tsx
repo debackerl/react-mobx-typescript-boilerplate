@@ -2,13 +2,13 @@
 
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import { useStrict } from 'mobx';
+import { autorun, useStrict } from 'mobx';
 import { Provider } from 'mobx-react';
 import { createBrowserHistory } from 'history';
-import { TodoModel } from 'app/models';
-import { createStores } from 'app/stores';
 import { Router } from 'react-router';
 import { Root } from 'app/containers/Root';
+import { TodoModel } from 'app/models';
+import { createStores } from 'app/stores';
 import { routes } from 'app';
 
 // enable MobX strict mode
@@ -23,6 +23,12 @@ const defaultTodos = [
 // prepare MobX stores
 const history = createBrowserHistory();
 const rootStore = createStores(history, defaultTodos);
+
+// update header of DOM from store updates
+autorun(() => {
+  document.title = rootStore.app.title;
+  document.querySelector("meta[name='description']").setAttribute("content", rootStore.app.description);
+});
 
 // render react DOM
 ReactDOM.render(
