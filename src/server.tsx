@@ -1,6 +1,6 @@
 import * as React from 'react';
 import * as express from "express";
-import { useStrict } from 'mobx';
+import { useStrict, toJS } from 'mobx';
 import { Provider } from 'mobx-react';
 import { Request, Response } from 'express';
 import { StaticRouter } from 'react-router'
@@ -31,6 +31,15 @@ function quoteattr(s: string, preserveCR: boolean = false) {
       ;
 }
 
+function escapehtml(unsafe: string) {
+  return unsafe
+       .replace(/&/g, "&amp;")
+       .replace(/</g, "&lt;")
+       .replace(/>/g, "&gt;")
+       .replace(/"/g, "&quot;")
+       .replace(/'/g, "&#039;");
+}
+
 const handler = (req: Request, res: Response) => {
   // default fixtures for TodoStore
   const defaultTodos = [
@@ -53,6 +62,7 @@ const handler = (req: Request, res: Response) => {
       </StaticRouter>
     </Provider>;
 
+  const state = JSON.stringify(toJS(rootStore, true));
   const content = renderToString(component);
 
   if (context.url) {
@@ -67,6 +77,7 @@ const handler = (req: Request, res: Response) => {
   </head>
   <body>
     <div id="root">${content}</div>
+    <script>window.__INITIAL_STATE__ = ${escapehtml(state)}</script>
   </body>
 </html>`);
   }
