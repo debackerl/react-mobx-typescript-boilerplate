@@ -5,10 +5,17 @@ import { Provider } from 'mobx-react';
 import { Request, Response } from 'express';
 import { StaticRouter } from 'react-router'
 import { renderToString } from 'react-dom/server'
+import bootstrap from 'react-async-bootstrapper';
+import * as serializeJS from 'serialize-javascript';
 import { STORE_APP } from 'app/constants';
 import { TodoModel } from 'app/models';
-import { createStores, AppStore } from 'app/stores';
+import { createStores } from 'app/stores';
 import { routes } from 'app';
+
+// https://github.com/ctrlplusb/react-universally
+// https://github.com/ctrlplusb/react-async-bootstrapper
+// https://github.com/ctrlplusb/react-jobs
+// https://github.com/ctrlplusb/react-async-component
 
 // enable MobX strict mode
 useStrict(true);
@@ -31,15 +38,6 @@ function quoteattr(s: string, preserveCR: boolean = false) {
       ;
 }
 
-function escapehtml(unsafe: string) {
-  return unsafe
-       .replace(/&/g, "&amp;")
-       .replace(/</g, "&lt;")
-       .replace(/>/g, "&gt;")
-       .replace(/"/g, "&quot;")
-       .replace(/'/g, "&#039;");
-}
-
 const handler = (req: Request, res: Response) => {
   // default fixtures for TodoStore
   const defaultTodos = [
@@ -48,27 +46,29 @@ const handler = (req: Request, res: Response) => {
   ];
 
   // prepare MobX stores
-  const rootStore = createStores(null, defaultTodos);
-  const appStore = rootStore[STORE_APP] as AppStore;
+  const stores = createStores(null, defaultTodos);
+  const appStore = stores[STORE_APP];
 
-  const context: any = {};
+  const reactRouterContext: any = {};
 
   // in a StaticRouter, all <Link to="..."> will be translated as <a href="...">
   // https://github.com/ReactTraining/react-router/blob/master/packages/react-router/docs/api/StaticRouter.md
   const component =
-    <Provider {...rootStore}>
-      <StaticRouter location={req.url} basename="/" context={context}>
+    <Provider {...stores}>
+      <StaticRouter location={req.url} basename="/" context={reactRouterContext}>
         {routes}
       </StaticRouter>
     </Provider>;
 
-  const state = JSON.stringify(toJS(rootStore, true));
-  const content = renderToString(component);
-
-  if (context.url) {
-    res.writeHead(302, { Location: context.url });
-  } else {
-    res.write(`<!doctype html>
+  bootstrap(component)
+  .then(() => {
+    const state = toJS(stores, true);
+    const content = renderToString(component);
+  
+    if (reactRouterContext.url) {
+      res.writeHead(302, { Location: reactRouterContext.url });
+    } else {
+      res.write(`<!doctype html>
 <html>
   <head>
     <meta charset="utf-8">
@@ -77,15 +77,23 @@ const handler = (req: Request, res: Response) => {
   </head>
   <body>
     <div id="root">${content}</div>
-    <script>window.__INITIAL_STATE__ = ${escapehtml(state)}</script>
+    <script>window.__INITIAL_STATE__ = ${serializeJS(state)}</script>
   </body>
 </html>`);
-  }
+    }
+    res.end();
+  })
+  .catch((err: Error) => {
+    console.log(err);
 
-  res.end()
+    res.writeHead(500);
+    res.write('Server error');
+    res.end();
+  });
 };
 
 const server = express();
+server.disable('x-powered-by');
  
 server.get("/", handler);
 

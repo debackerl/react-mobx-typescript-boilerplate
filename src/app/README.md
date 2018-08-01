@@ -8,7 +8,7 @@ to a web API.
 If containers are asynchronously loading data from their componentDidMount() function,
 the result won't be visible to server's renderToString(), because the latter returns
 immediatly. Consequently, containers requiring data to be loaded, must provide a function
-to load it, componentWillPreRender().
+to load it, bootstrap(), which returns a Promise resolving when all data has been loaded.
 
 The stores live as long as the SPA is loaded in the browser. Switching from one page to another
 won't reset those. A store is similar to a local database.

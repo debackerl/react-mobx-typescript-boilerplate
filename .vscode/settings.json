@@ -23,8 +23,6 @@
   },
 
   "auto-close-tag.activationOnLanguage": [
-    "typescript",
-    "typescriptreact",
     "mdx"
   ],
 
