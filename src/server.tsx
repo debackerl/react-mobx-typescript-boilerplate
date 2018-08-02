@@ -22,7 +22,8 @@ import { routes } from 'app';
 // https://github.com/ctrlplusb/react-async-component
 
 const config = {
-  indexHtmlPath: './dist/index.html'
+  indexHtmlPath: './dist/index.html',
+  httpPort: 3000
 };
 
 const indexHtml = readFileSync(config.indexHtmlPath).toString('utf-8');
@@ -61,8 +62,6 @@ const handler = (req: Request, res: Response) => {
       res.writeHead(302, { Location: reactRouterContext.url });
     } else {
       // send page to browser
-      
-
       res.write(`<!doctype html>
 <html ${helmet.htmlAttributes.toString()}>
   <head>
@@ -91,7 +90,8 @@ const handler = (req: Request, res: Response) => {
 
 const server = express();
 server.disable('x-powered-by');
- 
+
+server.use('/static', express.static('dist'));
 server.get("/", handler);
 
-server.listen(3000);
+server.listen(config.httpPort);

@@ -22,7 +22,7 @@ module.exports = {
     path: outPath,
     filename: 'runtime.js', // sync chunk
     chunkFilename: '[name]-[chunkhash].js', // async chunk
-    publicPath: '/' // public path of app as seen by browser
+    publicPath: '/static' // public path of app as seen by browser
   },
   target: 'web',
   resolve: {
@@ -134,6 +134,9 @@ module.exports = {
   },
   plugins: [
     new WebpackCleanupPlugin(),
+    new webpack.DefinePlugin({
+      'process.env.NODE_ENV': process.env.NODE_ENV || 'production'
+    }),
     new ExtractTextPlugin({
       filename: 'styles.css',
       disable: !isProduction
