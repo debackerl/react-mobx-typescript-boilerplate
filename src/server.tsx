@@ -1,13 +1,17 @@
 import * as React from 'react';
 import * as express from "express";
-import { useStrict, toJS } from 'mobx';
+import { readFileSync } from 'fs';
+import * as cheerio from 'cheerio';
+import { useStrict } from 'mobx';
 import { Provider } from 'mobx-react';
+import { Serialize } from 'cerialize';
 import { Request, Response } from 'express';
 import { StaticRouter } from 'react-router'
 import { renderToString } from 'react-dom/server'
+import * as Helmet from 'react-helmet';
 import bootstrap from 'react-async-bootstrapper';
 import * as serializeJS from 'serialize-javascript';
-import { STORE_APP } from 'app/constants';
+import { STORE_TODO } from 'app/constants';
 import { TodoModel } from 'app/models';
 import { createStores } from 'app/stores';
 import { routes } from 'app';
@@ -17,37 +21,23 @@ import { routes } from 'app';
 // https://github.com/ctrlplusb/react-jobs
 // https://github.com/ctrlplusb/react-async-component
 
+const config = {
+  indexHtmlPath: './dist/index.html'
+};
+
+const indexHtml = readFileSync(config.indexHtmlPath).toString('utf-8');
+const index$ = cheerio.load(indexHtml);
+const htmlHeadContent = index$.html('head > *');
+const htmlBodyContent = index$.html('body > :not(#root)');
+
 // enable MobX strict mode
 useStrict(true);
 
-function quoteattr(s: string, preserveCR: boolean = false) {
-  const cr = preserveCR ? '&#13;' : '\n';
-  return ('' + s) /* Forces the conversion to string. */
-      .replace(/&/g, '&amp;') /* This MUST be the 1st replacement. */
-      .replace(/'/g, '&apos;') /* The 4 other predefined entities, required. */
-      .replace(/"/g, '&quot;')
-      .replace(/</g, '&lt;')
-      .replace(/>/g, '&gt;')
-      /*
-      You may add other replacements here for HTML only 
-      (but it's not necessary).
-      Or for XML, only if the named entities are defined in its DTD.
-      */ 
-      .replace(/\r\n/g, cr) /* Must be before the next replacement. */
-      .replace(/[\r\n]/g, cr);
-      ;
-}
-
 const handler = (req: Request, res: Response) => {
-  // default fixtures for TodoStore
-  const defaultTodos = [
-    new TodoModel('Use Mobx'),
-    new TodoModel('Use React', true)
-  ];
-
   // prepare MobX stores
-  const stores = createStores(null, defaultTodos);
-  const appStore = stores[STORE_APP];
+  const stores = createStores(null);
+  stores[STORE_TODO].addTodo(new TodoModel('Use React', true));
+  stores[STORE_TODO].addTodo(new TodoModel('Use Mobx'));
 
   const reactRouterContext: any = {};
 
@@ -62,22 +52,29 @@ const handler = (req: Request, res: Response) => {
 
   bootstrap(component)
   .then(() => {
-    const state = toJS(stores, true);
+    const state = Serialize(stores);
     const content = renderToString(component);
-  
+    const helmet = Helmet.renderStatic();
+
     if (reactRouterContext.url) {
+      // send redirect to browser
       res.writeHead(302, { Location: reactRouterContext.url });
     } else {
+      // send page to browser
+      
+
       res.write(`<!doctype html>
-<html>
+<html ${helmet.htmlAttributes.toString()}>
   <head>
-    <meta charset="utf-8">
-    <title>${quoteattr(appStore.title)}</title>
-    <meta name="description" content="${quoteattr(appStore.title)}">
+    ${htmlHeadContent}
+    ${helmet.title.toString()}
+    ${helmet.meta.toString()}
+    ${helmet.link.toString()}
   </head>
-  <body>
-    <div id="root">${content}</div>
+  <body ${helmet.bodyAttributes.toString()}>
     <script>window.__INITIAL_STATE__ = ${serializeJS(state)}</script>
+    <div id="root">${content}</div>
+    ${htmlBodyContent}
   </body>
 </html>`);
     }

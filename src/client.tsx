@@ -2,34 +2,20 @@
 
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import { autorun, useStrict } from 'mobx';
+import { useStrict } from 'mobx';
 import { Provider } from 'mobx-react';
 import { createBrowserHistory } from 'history';
 import { Router } from 'react-router';
-import { STORE_APP } from 'app/constants';
-import { TodoModel } from 'app/models';
 import { createStores } from 'app/stores';
 import { routes } from 'app';
 
 // enable MobX strict mode
 useStrict(true);
 
-// default fixtures for TodoStore
-const defaultTodos = [
-  new TodoModel('Use Mobx'),
-  new TodoModel('Use React', true)
-];
-
 // prepare MobX stores
+const initialState: any = window['__INITIAL_STATE__'];
 const history = createBrowserHistory();
-const stores = createStores(history, defaultTodos);
-const appStore = stores[STORE_APP];
-
-// update header of DOM from store updates
-autorun(() => {
-  document.title = appStore.title;
-  document.querySelector("meta[name='description']").setAttribute("content", appStore.description);
-});
+const stores = createStores(history, initialState);
 
 // Root container to inject Dev Tools in browser
 class Root extends React.Component<any, any> {

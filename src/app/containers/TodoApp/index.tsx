@@ -3,10 +3,9 @@ import '@blueprintjs/datetime/lib/css/blueprint-datetime.css';
 import '@blueprintjs/select/lib/css/blueprint-select.css';
 
 import * as React from 'react';
-import * as style from './style.css';
+import { Helmet } from "react-helmet";
 import { inject, observer } from 'mobx-react';
 import { RouteComponentProps } from 'react-router';
-import { Alignment, Navbar, NavbarGroup, NavbarHeading, NavbarDivider, Button } from '@blueprintjs/core';
 import { Layout } from 'app/containers/Layout';
 import { Header } from 'app/components/Header';
 import { TodoList } from 'app/components/TodoList';
@@ -19,6 +18,7 @@ import {
   TODO_FILTER_LOCATION_HASH,
   TodoFilter
 } from 'app/constants';
+import * as style from './style.css';
 
 export interface TodoAppProps extends RouteComponentProps<any> {
   /** MobX Stores will be injected via @inject() **/
@@ -41,11 +41,6 @@ export class TodoApp extends React.Component<TodoAppProps, TodoAppState> {
 
   componentWillMount() {
     this.checkLocationChange();
-  }
-
-  componentDidMount() {
-    const appStore = this.props[STORE_APP] as AppStore;
-    appStore.setTitle("Todo list");
   }
 
   componentWillReceiveProps(nextProps: TodoAppProps, nextContext: any) {
@@ -101,6 +96,9 @@ export class TodoApp extends React.Component<TodoAppProps, TodoAppState> {
 
     return (
       <Layout>
+        <Helmet>
+          <title>Todo App</title>
+        </Helmet>
         <div className={style.normal}>
           <Header addTodo={todoStore.addTodo} />
           <TodoList

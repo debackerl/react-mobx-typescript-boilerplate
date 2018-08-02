@@ -1,15 +1,10 @@
 import { observable, action } from 'mobx';
 
 export class AppStore {
-  @observable public title: string;
-  @observable public description: string;
+  @observable public language: string;
 
-  @action public setTitle(value: string) {
-    this.title = value;
-  }
-
-  @action public setDescription(value: string) {
-    this.description = value;
+  @action public setLanguage(value: string) {
+    this.language = value;
   }
 }
 

@@ -1,12 +1,13 @@
 import { observable, computed, action } from 'mobx';
+import { autoserialize } from 'cerialize';
 import { TodoModel } from 'app/models';
 
 export class TodoStore {
-  constructor(fixtures: TodoModel[]) {
-    this.todos = fixtures;
+  constructor() {
+    this.todos = [];
   }
 
-  @observable public todos: Array<TodoModel>;
+  @observable @autoserialize public todos: Array<TodoModel>;
 
   @computed
   get activeTodos() {

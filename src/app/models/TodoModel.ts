@@ -1,9 +1,10 @@
 import { observable } from 'mobx';
+import { autoserialize } from 'cerialize';
 
 export class TodoModel {
-  readonly id: number;
-  @observable public text: string;
-  @observable public completed: boolean;
+  @autoserialize readonly id: number;
+  @observable @autoserialize public text: string;
+  @observable @autoserialize public completed: boolean;
 
   constructor(text: string, completed: boolean = false) {
     this.id = TodoModel.generateId();
