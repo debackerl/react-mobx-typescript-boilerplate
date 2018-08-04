@@ -4,6 +4,9 @@
   // https://marketplace.visualstudio.com/items?itemName=silvenon.mdx
   // https://marketplace.visualstudio.com/items?itemName=eg2.tslint
   // https://marketplace.visualstudio.com/items?itemName=christian-kohler.path-intellisense
+  // https://marketplace.visualstudio.com/items?itemName=CoenraadS.bracket-pair-colorizer
+  // https://marketplace.visualstudio.com/items?itemName=eg2.vscode-npm-script
+  // https://marketplace.visualstudio.com/items?itemName=PeterJausovec.vscode-docker
 
   "editor.tabSize": 2,
   "editor.insertSpaces": true,
