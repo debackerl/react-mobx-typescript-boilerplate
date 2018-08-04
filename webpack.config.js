@@ -162,13 +162,7 @@ module.exports = (env, argv) => {
       stats: 'minimal' // show errors and new compilation events
     },
     devtool: isProduction
-      ? 'source-map' // create source map file appart, with reference in comments
-      : 'cheap-module-eval-source-map', // inline source map
-    node: {
-      // workaround for webpack-dev-server issue
-      // https://github.com/webpack/webpack-dev-server/issues/60#issuecomment-103411179
-      fs: 'empty',
-      net: 'empty'
-    }
+      ? false
+      : 'cheap-module-eval-source-map' // inline source map
   };
 };
