@@ -91,7 +91,7 @@ const handler = (req: Request, res: Response) => {
 const server = express();
 server.disable('x-powered-by');
 
-server.use('/static', express.static('dist'));
+server.use('/dist', express.static('dist'));
 server.get("/", handler);
 
 server.listen(config.httpPort);

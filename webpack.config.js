@@ -14,6 +14,9 @@ var outPath = path.join(__dirname, './dist');
 
 // Documentation: https://webpack.js.org/configuration/
 
+// production mode will set process.env.NODE_ENV to 'production' in app,
+// otherwise it will be 'development'.
+
 module.exports = (env, argv) => {
   var isProduction = argv.mode === 'production';
 
@@ -26,7 +29,7 @@ module.exports = (env, argv) => {
       path: outPath,
       filename: 'runtime.js', // sync chunk
       chunkFilename: '[name]-[chunkhash].js', // async chunk
-      publicPath: '/static' // public path of app as seen by browser
+      publicPath: '/dist' // public path of app as seen by browser
     },
     target: 'web',
     resolve: {
@@ -134,12 +137,12 @@ module.exports = (env, argv) => {
           }
         }
       },
-      minimizer: [
+      minimizer: isProduction ? [
         new UglifyJsPlugin({
           cache: true
         }),
         new OptimizeCSSAssetsPlugin({})
-      ],
+      ] : [],
       runtimeChunk: true
     },
     plugins: [
@@ -153,12 +156,17 @@ module.exports = (env, argv) => {
       })
     ],
     devServer: {
-      contentBase: sourcePath, // location of files to be served
-      hot: true,
-      inline: true, // code inserted in app for hot reloading
+      contentBase: sourcePath, // ./src/assets available as /assets
       historyApiFallback: {
-        disableDotRule: true
+        disableDotRule: true,
+        index: '/dist/index.html',
+        /*rewrite: [
+          // for use with multiple SPAs:
+          { from: /./, to: '/dist/index.html' }
+        ]*/
       },
+      hot: true, // hot module replacement, requires HotModuleReplacementPlugin or --hot
+      inline: true, // code inserted in app for hot reloading
       stats: 'minimal' // show errors and new compilation events
     },
     devtool: isProduction
