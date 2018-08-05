@@ -61,7 +61,9 @@
     "webpack-cleanup-plugin": "^0.5.1",
     "webpack-cli": "^3.1.0",
     "webpack-dev-server": "^3.1.5",
-    "webpack-hot-middleware": "^2.22.3"
+    "webpack-hot-middleware": "^2.22.3",
+    "webpack-node-externals": "^1.7.2",
+    "webpack-source-map-support": "^2.0.1"
   },
   "dependencies": {
     "classnames": "^2.2.5",

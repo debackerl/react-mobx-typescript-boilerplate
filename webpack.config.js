@@ -7,10 +7,13 @@ var ExtractTextPlugin = require('extract-text-webpack-plugin');
 var WebpackCleanupPlugin = require('webpack-cleanup-plugin');
 var UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 var OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
+var nodeExternals = require('webpack-node-externals');
+var WebpackSourceMapSupport = require("webpack-source-map-support");
 
 // variables
 var sourcePath = path.join(__dirname, './src');
-var outPath = path.join(__dirname, './dist');
+var clientOutPath = path.join(__dirname, './dist');
+var serverOutPath = __dirname;
 
 // Documentation: https://webpack.js.org/configuration/
 
@@ -20,18 +23,8 @@ var outPath = path.join(__dirname, './dist');
 module.exports = (env, argv) => {
   var isProduction = argv.mode === 'production';
 
-  return {
+  const common = {
     context: sourcePath,
-    entry: {
-      main: './client.tsx' // all entry points used by app, typically one per 'start' page
-    },
-    output: {
-      path: outPath,
-      filename: 'runtime.js', // sync chunk
-      chunkFilename: '[name]-[chunkhash].js', // async chunk
-      publicPath: '/dist' // public path of app as seen by browser
-    },
-    target: 'web',
     resolve: {
       extensions: ['.js', '.ts', '.tsx', '.mdx', '.css'], // extensions used for module resolution
       // Fix webpack's default behavior to not load packages with jsnext:main module
@@ -119,6 +112,19 @@ module.exports = (env, argv) => {
         { test: /\.png$/, use: 'url-loader?limit=10000' },
         { test: /\.jpg$/, use: 'file-loader' }
       ]
+    }
+  };
+
+  const client = Object.assign({}, common, {
+    target: 'web',
+    entry: {
+      main: './client.tsx' // all entry points used by app, typically one per 'start' page
+    },
+    output: {
+      path: clientOutPath,
+      filename: 'runtime.js', // sync chunk
+      chunkFilename: '[name]-[chunkhash].js', // async chunk
+      publicPath: '/dist' // public path of app as seen by browser
     },
     optimization: {
       splitChunks: {
@@ -147,6 +153,7 @@ module.exports = (env, argv) => {
     },
     plugins: [
       new WebpackCleanupPlugin(),
+      // https://medium.com/@mattvagni/server-side-rendering-with-css-modules-6b02f1238eb1
       new ExtractTextPlugin({
         filename: 'styles.css',
         disable: !isProduction
@@ -172,5 +179,34 @@ module.exports = (env, argv) => {
     devtool: isProduction
       ? false
       : 'cheap-module-eval-source-map' // inline source map
-  };
+  });
+
+  const server = Object.assign({}, common, {
+    target: 'node', // won't touch native dependencies such as fs or path
+    entry: './server.tsx',
+    output: {
+      path: serverOutPath,
+      filename: 'server.js',
+      libraryTarget: 'commonjs'
+    },
+    externals: [
+      nodeExternals({
+        modulesFromFile: true,
+        //whitelist: [/\.css$/]
+      }),
+      ///^(?!\.|\/|app(\/.*)?).+/i // any path not starting with . or / or app
+    ],
+    plugins: [
+      new ExtractTextPlugin({
+        disable: true
+      }),
+      new WebpackSourceMapSupport()
+    ],
+    optimization: {
+      minimizer: []
+    },
+    devtool: 'nosources-source-map'
+  });
+
+  return [ client ];
 };

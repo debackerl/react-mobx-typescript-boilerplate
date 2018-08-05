@@ -23,7 +23,7 @@ import { routes } from 'app';
 
 const config = {
   indexHtmlPath: './dist/index.html',
-  httpPort: 3000
+  httpPort: process.env.PORT ? Number.parseInt(process.env.PORT) : 3000
 };
 
 const indexHtml = readFileSync(config.indexHtmlPath).toString('utf-8');
