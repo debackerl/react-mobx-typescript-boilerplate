@@ -20,6 +20,8 @@ import {
 } from 'app/constants';
 import * as style from './style.css';
 
+console.log('Test CSS support: ' + style.normal);
+
 export interface TodoAppProps extends RouteComponentProps<any> {
   /** MobX Stores will be injected via @inject() **/
   [STORE_APP]: AppStore;
