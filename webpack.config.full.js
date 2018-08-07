@@ -3,6 +3,7 @@ var path = require('path');
 
 // plugins
 var HtmlWebpackPlugin = require('html-webpack-plugin');
+// TODO: migrate to https://github.com/webpack-contrib/mini-css-extract-plugin
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
 var WebpackCleanupPlugin = require('webpack-cleanup-plugin');
 var UglifyJsPlugin = require('uglifyjs-webpack-plugin');
@@ -116,6 +117,7 @@ module.exports = (env, argv) => {
   };
 
   const client = Object.assign({}, common, {
+    name: 'client',
     target: 'web',
     entry: {
       main: './client.tsx' // all entry points used by app, typically one per 'start' page
@@ -182,6 +184,7 @@ module.exports = (env, argv) => {
   });
 
   const server = Object.assign({}, common, {
+    name: 'server',
     target: 'node', // won't touch native dependencies such as fs or path
     entry: './server.tsx',
     output: {

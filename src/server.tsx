@@ -4,11 +4,12 @@ import { readFileSync } from 'fs';
 import * as cheerio from 'cheerio';
 import { useStrict } from 'mobx';
 import { Provider } from 'mobx-react';
+import { createMemoryHistory } from 'history';
 import { Serialize } from 'cerialize';
 import { Request, Response } from 'express';
 import { StaticRouter } from 'react-router'
 import { renderToString } from 'react-dom/server'
-import * as Helmet from 'react-helmet';
+import { Helmet } from 'react-helmet';
 import bootstrap from 'react-async-bootstrapper';
 import * as serializeJS from 'serialize-javascript';
 import { STORE_TODO } from 'app/constants';
@@ -36,7 +37,9 @@ useStrict(true);
 
 const handler = (req: Request, res: Response) => {
   // prepare MobX stores
-  const stores = createStores(null);
+  const history = createMemoryHistory();
+  history.push(req.path);
+  const stores = createStores(history);
   stores[STORE_TODO].addTodo(new TodoModel('Use React', true));
   stores[STORE_TODO].addTodo(new TodoModel('Use Mobx'));
 
@@ -44,6 +47,7 @@ const handler = (req: Request, res: Response) => {
 
   // in a StaticRouter, all <Link to="..."> will be translated as <a href="...">
   // https://github.com/ReactTraining/react-router/blob/master/packages/react-router/docs/api/StaticRouter.md
+  // https://github.com/ReactTraining/react-router/blob/master/packages/react-router-dom/docs/guides/server-rendering.md
   const component =
     <Provider {...stores}>
       <StaticRouter location={req.url} basename="/" context={reactRouterContext}>
