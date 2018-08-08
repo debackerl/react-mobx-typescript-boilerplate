@@ -1,5 +1,5 @@
 import { observable, computed, action } from 'mobx';
-import { autoserialize } from 'cerialize';
+import { createModelSchema, primitive, reference, list, object, identifier, serialize, deserialize, getDefaultModelSchema, serializable, alias } from 'serializr';
 import { TodoModel } from 'app/models';
 
 export class TodoStore {
@@ -7,7 +7,9 @@ export class TodoStore {
     this.todos = [];
   }
 
-  @observable @autoserialize public todos: Array<TodoModel>;
+  @observable
+  @serializable(list(object(TodoModel)))
+  public todos: Array<TodoModel>;
 
   @computed
   get activeTodos() {

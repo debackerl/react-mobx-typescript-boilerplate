@@ -21,6 +21,18 @@ var serverOutPath = __dirname;
 // production mode will set process.env.NODE_ENV to 'production' in app,
 // otherwise it will be 'development'.
 
+// TODO:
+// server build needs postcss module logic to get class names,
+// however, the output of postcss must be processed by extract text or mini css,
+// which is writing CSS to a file. This is to avoid using style-loader, which
+// doesn't work on server side. Problem is that client build is also building
+// CSS file.
+
+// TODO:
+// The TypeScript code is built twice, once for server, once for client.
+// TypeScript 3.0 has added support for shared code. Maybe we can precompile
+// the app as a TypeScript library. Then use Webpack to create bundles.
+
 module.exports = (env, argv) => {
   var isProduction = argv.mode === 'production';
 

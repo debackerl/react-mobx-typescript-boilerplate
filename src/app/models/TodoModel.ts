@@ -1,20 +1,33 @@
 import { observable } from 'mobx';
-import { autoserialize } from 'cerialize';
+import { createModelSchema, primitive, reference, list, object, identifier, serialize, deserialize, getDefaultModelSchema, serializable, alias } from 'serializr';
 
-export class TodoModel {
-  @autoserialize readonly id: number;
-  @observable @autoserialize public text: string;
-  @observable @autoserialize public completed: boolean;
+class TodoModelBase {
+  @serializable(alias('_id'))
+  readonly id: number;
 
-  constructor(text: string, completed: boolean = false) {
-    this.id = TodoModel.generateId();
-    this.text = text;
-    this.completed = completed;
+  constructor() {
+    this.id = TodoModelBase.generateId();
   }
 
   static nextId = 1;
   static generateId() {
     return this.nextId++;
+  }
+}
+
+export class TodoModel extends TodoModelBase {
+  @observable
+  @serializable
+  public text: string;
+  
+  @observable
+  @serializable
+  public completed: boolean;
+
+  constructor(text: string, completed: boolean = false) {
+    super();
+    this.text = text;
+    this.completed = completed;
   }
 }
 

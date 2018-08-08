@@ -10,6 +10,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "webpack-dev-server --mode development --hot --progress --colors --port 3000 --open",
+    "serve": "node server.js",
     "build": "webpack --config=webpack.config.full.js --mode=production --progress --colors",
     "build:client": "webpack --config=webpack.config.full.js --config-name=client --mode=production --progress --colors",
     "build:server": "webpack --config=webpack.config.full.js --config-name=server --mode=production --progress --colors",
@@ -82,8 +83,7 @@
     "react-async-component": "^2.0.0",
     "react-dom-factories": "^1.0.2",
     "cheerio": "^0.22.0",
-    "cerialize": "^0.1.18",
-    "serialize-javascript": "^1.3.2",
-    "isomorphic-fetch": "^2.2.1"
+    "isomorphic-fetch": "^2.2.1",
+    "serializr": "^1.3.0"
   }
 }

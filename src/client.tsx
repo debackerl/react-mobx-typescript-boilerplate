@@ -8,6 +8,7 @@ import { createBrowserHistory } from 'history';
 import { Router } from 'react-router';
 import { createStores } from 'app/stores';
 import { routes } from 'app';
+import { Root } from 'app/containers/Root';
 
 // enable MobX strict mode
 useStrict(true);
@@ -16,26 +17,6 @@ useStrict(true);
 const initialState: any = window['__INITIAL_STATE__'];
 const history = createBrowserHistory();
 const stores = createStores(history, initialState);
-
-// Root container to inject Dev Tools in browser
-class Root extends React.Component<any, any> {
-  renderDevTool() {
-    if (process.env.NODE_ENV !== 'production') {
-      const DevTools = require('mobx-react-devtools').default;
-      return <DevTools />;
-    }
-    return null;
-  }
-
-  render() {
-    return (
-      <div className="container">
-        {this.props.children}
-        {this.renderDevTool()}
-      </div>
-    );
-  }
-}
 
 // render react DOM
 ReactDOM.render(

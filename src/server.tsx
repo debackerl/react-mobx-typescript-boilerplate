@@ -2,19 +2,20 @@ import * as React from 'react';
 import * as express from "express";
 import { readFileSync } from 'fs';
 import * as cheerio from 'cheerio';
-import { useStrict } from 'mobx';
+import { useStrict, autorun } from 'mobx';
 import { Provider } from 'mobx-react';
 import { createMemoryHistory } from 'history';
-import { Serialize } from 'cerialize';
+import { serialize } from 'serializr';
 import { Request, Response } from 'express';
 import { StaticRouter } from 'react-router'
 import { renderToString } from 'react-dom/server'
 import { Helmet } from 'react-helmet';
 import bootstrap from 'react-async-bootstrapper';
 import * as serializeJS from 'serialize-javascript';
+import { Root } from 'app/containers/Root';
 import { STORE_TODO } from 'app/constants';
 import { TodoModel } from 'app/models';
-import { createStores } from 'app/stores';
+import { createStores, TodoStore } from 'app/stores';
 import { routes } from 'app';
 
 // https://github.com/ctrlplusb/react-universally
@@ -35,6 +36,20 @@ const htmlBodyContent = index$.html('body > :not(#root)');
 // enable MobX strict mode
 useStrict(true);
 
+/*const history = createMemoryHistory();
+history.push('/');
+const stores = createStores(history);
+stores[STORE_TODO].addTodo(new TodoModel('Use React', true));
+stores[STORE_TODO].addTodo(new TodoModel('Use Mobx'));
+console.log(util.inspect(stores[STORE_TODO].todos[0]));
+//const state = JSON.stringify(stores[STORE_TODO]) as string;
+const state = serialize(stores[STORE_TODO]);
+console.log(state);
+const hydrated = deserialize(TodoStore, state) as TodoStore;
+autorun(() => console.log(hydrated.todos.length));
+console.log(util.inspect(hydrated.todos[0]));
+hydrated.clearCompleted();*/
+
 const handler = (req: Request, res: Response) => {
   // prepare MobX stores
   const history = createMemoryHistory();
@@ -50,14 +65,18 @@ const handler = (req: Request, res: Response) => {
   // https://github.com/ReactTraining/react-router/blob/master/packages/react-router-dom/docs/guides/server-rendering.md
   const component =
     <Provider {...stores}>
-      <StaticRouter location={req.url} basename="/" context={reactRouterContext}>
-        {routes}
-      </StaticRouter>
+      <Root>
+        <StaticRouter location={req.url} basename="/" context={reactRouterContext}>
+          {routes}
+        </StaticRouter>
+      </Root>
     </Provider>;
 
   bootstrap(component)
   .then(() => {
-    const state = Serialize(stores);
+    const state: any = {
+      [STORE_TODO]: serialize(stores[STORE_TODO])
+    };
     const content = renderToString(component);
     const helmet = Helmet.renderStatic();
 
@@ -96,6 +115,6 @@ const server = express();
 server.disable('x-powered-by');
 
 server.use('/dist', express.static('dist'));
-server.get("/", handler);
+server.get('*', handler);
 
 server.listen(config.httpPort);
