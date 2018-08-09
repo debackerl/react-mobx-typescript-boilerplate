@@ -2,7 +2,7 @@ import * as React from 'react';
 import * as express from "express";
 import { readFileSync } from 'fs';
 import * as cheerio from 'cheerio';
-import { useStrict, autorun } from 'mobx';
+import { useStrict } from 'mobx';
 import { Provider } from 'mobx-react';
 import { createMemoryHistory } from 'history';
 import { serialize } from 'serializr';
@@ -15,7 +15,7 @@ import * as serializeJS from 'serialize-javascript';
 import { Root } from 'app/containers/Root';
 import { STORE_TODO } from 'app/constants';
 import { TodoModel } from 'app/models';
-import { createStores, TodoStore } from 'app/stores';
+import { createStores } from 'app/stores';
 import { routes } from 'app';
 
 // https://github.com/ctrlplusb/react-universally

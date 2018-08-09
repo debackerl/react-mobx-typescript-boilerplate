@@ -1,4 +1,4 @@
-import * as styles from './style.css'
+import * as style from './style.css'
 import * as React from 'react';
 import { Helmet } from "react-helmet";
 import { Layout } from 'app/containers/Layout';
@@ -10,7 +10,7 @@ function buildPage(title: string, page: (props: any) => JSX.Element) : (props: a
       <Helmet>
         <title>{title}</title>
       </Helmet>
-      <div className={styles.page}>{page(props)}</div>
+      <div className={style.page}>{page(props)}</div>
     </Layout>;
 }
 

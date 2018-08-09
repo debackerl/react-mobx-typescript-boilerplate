@@ -50,9 +50,9 @@ export class TodoTextInput extends React.Component<
     const classes = classNames(
       {
         [style.edit]: this.props.editing,
-        [style.new]: this.props.newTodo
+        [style.newItem]: this.props.newTodo
       },
-      style.normal
+      ""
     );
 
     return (

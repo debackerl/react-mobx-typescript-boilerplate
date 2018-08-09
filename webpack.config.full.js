@@ -9,7 +9,7 @@ var WebpackCleanupPlugin = require('webpack-cleanup-plugin');
 var UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 var OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 var nodeExternals = require('webpack-node-externals');
-var WebpackSourceMapSupport = require("webpack-source-map-support");
+//var ZopfliPlugin = require('zopfli-webpack-plugin');
 
 // variables
 var sourcePath = path.join(__dirname, './src');
@@ -92,9 +92,12 @@ module.exports = (env, argv) => {
             fallback: 'style-loader',
             use: [
               {
-                // resolve css files from source code
-                loader: 'css-loader',
+                // resolve css files from source code,
+                // and creates .d.ts file next to each imported css file
+                loader: 'typings-for-css-modules-loader',
                 query: {
+                  namedExport: true, // export only class names valid in JavaScript
+                  camelCase: true, // convert class names to valid names in JavaScript
                   modules: true, // module mode to use CSS files as modules
                   sourceMap: !isProduction, // generate source map when not production
                   importLoaders: 1, // number of CSS loaders to apply before this one (postcss-loader, defined below)
@@ -169,12 +172,23 @@ module.exports = (env, argv) => {
       new WebpackCleanupPlugin(),
       // https://medium.com/@mattvagni/server-side-rendering-with-css-modules-6b02f1238eb1
       new ExtractTextPlugin({
-        filename: 'styles.css',
+        filename: '[name]-[chunkhash].css',
         disable: !isProduction // when disable = true, then style-loader is used as fallback
       }),
       new HtmlWebpackPlugin({
         template: 'assets/index.html'
-      })
+      }),
+      new webpack.WatchIgnorePlugin([
+        // ignore CSS type files for HOT mode
+        /\.(c|sa|sc|le)ss\.d\.ts$/
+      ]),
+      /*new ZopfliPlugin({
+        asset: "[path].gz[query]",
+        algorithm: "zopfli",
+        test: /\.(css|js|html)$/,
+        threshold: 4096,
+        minRatio: 0.8
+      })*/
     ],
     devServer: {
       contentBase: sourcePath, // ./src/assets available as /assets
@@ -212,10 +226,16 @@ module.exports = (env, argv) => {
     ],
     plugins: [
       new ExtractTextPlugin({
-        filename: './dist/styles.css',
+        // TODO: useless, need a way to skip it
+        filename: './server.css',
         disable: false
       }),
-      new WebpackSourceMapSupport()
+      new webpack.BannerPlugin({
+        banner: 'require("source-map-support").install();',
+        raw: true,
+        entryOnly: false,
+        include: /\.js$/
+      })
     ],
     devtool: 'nosources-source-map'
   });
