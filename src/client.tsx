@@ -6,9 +6,7 @@ import { useStrict } from 'mobx';
 import { Provider } from 'mobx-react';
 import { createBrowserHistory } from 'history';
 import { Router } from 'react-router';
-import { createStores } from 'app/stores';
-import { routes } from 'app';
-import { Root } from 'app/containers/Root';
+import { Root, routes, createStores } from 'app';
 
 // enable MobX strict mode
 useStrict(true);

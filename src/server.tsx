@@ -5,18 +5,13 @@ import * as cheerio from 'cheerio';
 import { useStrict } from 'mobx';
 import { Provider } from 'mobx-react';
 import { createMemoryHistory } from 'history';
-import { serialize } from 'serializr';
 import { Request, Response } from 'express';
 import { StaticRouter } from 'react-router'
 import { renderToString } from 'react-dom/server'
 import { Helmet } from 'react-helmet';
 import bootstrap from 'react-async-bootstrapper';
 import * as serializeJS from 'serialize-javascript';
-import { Root } from 'app/containers/Root';
-import { STORE_TODO } from 'app/constants';
-import { TodoModel } from 'app/models';
-import { createStores } from 'app/stores';
-import { routes } from 'app';
+import { Root, routes, createStores, extractState } from 'app';
 
 // https://github.com/ctrlplusb/react-universally
 // https://github.com/ctrlplusb/react-async-bootstrapper
@@ -55,8 +50,6 @@ const handler = (req: Request, res: Response) => {
   const history = createMemoryHistory();
   history.push(req.path);
   const stores = createStores(history);
-  stores[STORE_TODO].addTodo(new TodoModel('Use React', true));
-  stores[STORE_TODO].addTodo(new TodoModel('Use Mobx'));
 
   const reactRouterContext: any = {};
 
@@ -74,9 +67,7 @@ const handler = (req: Request, res: Response) => {
 
   bootstrap(component)
   .then(() => {
-    const state: any = {
-      [STORE_TODO]: serialize(stores[STORE_TODO])
-    };
+    const state = extractState(stores);
     const content = renderToString(component);
     const helmet = Helmet.renderStatic();
 

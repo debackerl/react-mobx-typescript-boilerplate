@@ -6,6 +6,7 @@ import * as React from 'react';
 import { Helmet } from "react-helmet";
 import { inject, observer } from 'mobx-react';
 import { RouteComponentProps } from 'react-router';
+import { TodoModel } from 'app/models';
 import { Layout } from 'app/containers/Layout';
 import { Header } from 'app/components/Header';
 import { TodoList } from 'app/components/TodoList';
@@ -39,6 +40,12 @@ export class TodoApp extends React.Component<TodoAppProps, TodoAppState> {
   constructor(props: TodoAppProps, context: any) {
     super(props, context);
     this.state = { filter: TodoFilter.ALL };
+  }
+
+  bootstrap() {
+    const store = this.props[STORE_TODO] as TodoStore;
+    store.addTodo(new TodoModel('Use React', true));
+    store.addTodo(new TodoModel('Use Mobx'));
   }
 
   componentWillMount() {
