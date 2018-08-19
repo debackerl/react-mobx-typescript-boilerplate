@@ -30,16 +30,13 @@ export interface TodoAppProps extends RouteComponentProps<any> {
   [STORE_TODO]: TodoStore;
 }
 
-export interface TodoAppState {
-  filter: TodoFilter;
-}
+export interface TodoAppState { }
 
 @inject(STORE_APP, STORE_TODO, STORE_ROUTER)
 @observer
 export class TodoApp extends React.Component<TodoAppProps, TodoAppState> {
   constructor(props: TodoAppProps, context: any) {
     super(props, context);
-    this.state = { filter: TodoFilter.ALL };
   }
 
   bootstrap() {
@@ -48,22 +45,13 @@ export class TodoApp extends React.Component<TodoAppProps, TodoAppState> {
     store.addTodo(new TodoModel('Use Mobx'));
   }
 
-  componentWillMount() {
-    this.checkLocationChange();
-  }
-
-  componentWillReceiveProps(nextProps: TodoAppProps, nextContext: any) {
-    this.checkLocationChange();
-  }
-
-  checkLocationChange() {
+  getFilter(): TodoFilter {
     const router = this.props[STORE_ROUTER] as RouterStore;
-    const filter = Object.keys(TODO_FILTER_LOCATION_HASH)
+    return Object.keys(TODO_FILTER_LOCATION_HASH)
       .map((key) => Number(key) as TodoFilter)
       .find(
         (filter) => TODO_FILTER_LOCATION_HASH[filter] === router.location.hash
       );
-    this.setState({ filter });
   }
 
   private handleFilter = (filter: TodoFilter) => {
@@ -90,7 +78,7 @@ export class TodoApp extends React.Component<TodoAppProps, TodoAppState> {
   render() {
     const todoStore = this.props[STORE_TODO] as TodoStore;
     const { children } = this.props;
-    const { filter } = this.state;
+    const filter = this.getFilter();
     const filteredTodos = this.getFilteredTodo(filter);
 
     const footer = todoStore.todos.length && (
