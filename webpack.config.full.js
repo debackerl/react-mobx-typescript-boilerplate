@@ -61,7 +61,12 @@ module.exports = (env, argv) => {
           test: /\.tsx?$/,
           use: isProduction
             ? 'ts-loader'
-            : ['babel-loader?plugins=react-hot-loader/babel', 'ts-loader']
+            : [{
+              loader: 'babel-loader',
+              options: {
+                plugins: ['react-hot-loader/babel']
+              }
+            }, 'ts-loader']
         },
         // .mdx
         // Loader converting Markdown files to React components.
@@ -75,6 +80,16 @@ module.exports = (env, argv) => {
           use: isProduction
             ? ['babel-loader', 'mdx-loader']
             : ['babel-loader?plugins=react-hot-loader/babel', 'mdx-loader']
+        },
+        // locales for i18next
+        {
+          test: /locales/,
+          use: {
+            loader: '@alienfast/i18next-loader',
+            query: {
+              basenameAsNamespace: true
+            }
+          }
         },
         // css from modules
         {

@@ -1,7 +1,8 @@
 {
   "compilerOptions": {
     "sourceMap": true,
-    "target": "es5",
+    "target": "es5", // MSIE 11 supports up to ES5
+    //"jsx": "preserve", // need to pass JSX to @lingui/babel-plugin-transform-js and @lingui/babel-plugin-transform-react as-is
     "jsx": "react",
     "module": "es6",
     "moduleResolution": "node",
@@ -14,8 +15,7 @@
     "noFallthroughCasesInSwitch": true,
     "removeComments": true,
     "strictNullChecks": false,
-    "outDir": "build",
-    "lib": ["es6", "es7", "dom"],
+    "lib": ["es6", "es7", "dom"], // APIs made available to TypeScript files
     "baseUrl": "src",
     "paths": {
       "app/*": ["./app/*"]

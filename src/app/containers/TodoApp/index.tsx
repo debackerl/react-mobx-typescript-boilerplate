@@ -6,11 +6,10 @@ import * as React from 'react';
 import { Helmet } from "react-helmet";
 import { inject, observer } from 'mobx-react';
 import { RouteComponentProps } from 'react-router';
+import { InjectedTranslateProps, InjectedI18nProps } from 'react-i18next';
+import { translate, Header, TodoList, Footer } from 'app/components';
 import { TodoModel } from 'app/models';
 import { Layout } from 'app/containers/Layout';
-import { Header } from 'app/components/Header';
-import { TodoList } from 'app/components/TodoList';
-import { Footer } from 'app/components/Footer';
 import { AppStore, TodoStore, RouterStore } from 'app/stores';
 import {
   STORE_APP,
@@ -23,15 +22,16 @@ import * as style from './style.css';
 
 console.log('Test CSS support: ' + style.normal);
 
-export interface TodoAppProps extends RouteComponentProps<any> {
+interface TodoAppProps extends RouteComponentProps<any>, InjectedTranslateProps, InjectedI18nProps {
   /** MobX Stores will be injected via @inject() **/
   [STORE_APP]: AppStore;
   [STORE_ROUTER]: RouterStore;
   [STORE_TODO]: TodoStore;
 }
 
-export interface TodoAppState { }
+interface TodoAppState { }
 
+@translate('main')
 @inject(STORE_APP, STORE_TODO, STORE_ROUTER)
 @observer
 export class TodoApp extends React.Component<TodoAppProps, TodoAppState> {
@@ -77,7 +77,7 @@ export class TodoApp extends React.Component<TodoAppProps, TodoAppState> {
 
   render() {
     const todoStore = this.props[STORE_TODO] as TodoStore;
-    const { children } = this.props;
+    const { t, children } = this.props;
     const filter = this.getFilter();
     const filteredTodos = this.getFilteredTodo(filter);
 
@@ -94,7 +94,7 @@ export class TodoApp extends React.Component<TodoAppProps, TodoAppState> {
     return (
       <Layout>
         <Helmet>
-          <title>Todo App</title>
+          <title>{t('title')}</title>
         </Helmet>
         <div className={style.normal}>
           <Header addTodo={todoStore.addTodo} />
