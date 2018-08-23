@@ -14,15 +14,12 @@ export class LocalizedContainer extends React.Component<LocalizedContainerProps,
     this.props.i18n.changeLanguage(language);
   }
 
-  shouldComponentUpdate(nextProps: LocalizedContainerProps, nextState: any) {
+  UNSAFE_componentWillReceiveProps(nextProps: LocalizedContainerProps) {
     const language = nextProps.match.params.language;
 
     if(this.props.match.params.language !== language) {
       nextProps.i18n.changeLanguage(language);
-      return true;
     }
-
-    return false;
   }
 
   render() {
