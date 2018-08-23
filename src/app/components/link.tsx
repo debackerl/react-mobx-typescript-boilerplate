@@ -9,13 +9,13 @@ export interface LinkerProp {
 
 const link = <P extends LinkerProp & RouteComponentProps<any>>(Component: React.ComponentType<P>) => withRouter(
   class Linker extends React.PureComponent<Exclude<P, LinkerProp>> {
-    pathTo(route: string, parameters?: any): string {
-      return makeRoute(baseUrl, route, parameters, this.props.match.params);
-    }
+    pathTo = (route: string, parameters?: any) => (
+      makeRoute(baseUrl, route, parameters, this.props.match.params)
+    );
 
     render() {
       return (
-        <Component pathTo={this.pathTo.bind(this)} {...this.props} />
+        <Component pathTo={this.pathTo} {...this.props} />
       );
     }
   }
