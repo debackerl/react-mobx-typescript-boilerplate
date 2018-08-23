@@ -18,7 +18,7 @@ interface LayoutProps extends RouteComponentProps<any>, InjectedTranslateProps, 
   
 }
 
-class _Layout extends React.PureComponent<LayoutProps> {
+class Layout extends React.PureComponent<LayoutProps> {
   makeLocalizedRoute(language: string): string {
     const match = this.props.match;
     return makeRoute(baseUrl, match.path, Object.assign({}, match.params, {language}));
@@ -53,5 +53,4 @@ class _Layout extends React.PureComponent<LayoutProps> {
   }
 }
 
-export const Layout = withRouter(translate('main')(_Layout));
-export default Layout;
+export default withRouter(translate('main')(Layout));

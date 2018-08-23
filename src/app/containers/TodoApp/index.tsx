@@ -6,10 +6,10 @@ import * as React from 'react';
 import { Helmet } from "react-helmet";
 import { inject, observer } from 'mobx-react';
 import { RouteComponentProps } from 'react-router';
-import { InjectedTranslateProps, InjectedI18nProps } from 'react-i18next';
-import { translate, Header, TodoList, Footer } from 'app/components';
+import { translate, InjectedTranslateProps, InjectedI18nProps } from 'react-i18next';
+import { Header, TodoList, Footer } from 'app/components';
 import { TodoModel } from 'app/models';
-import { Layout } from 'app/containers/Layout';
+import Layout from 'app/containers/Layout';
 import { AppStore, TodoStore, RouterStore } from 'app/stores';
 import {
   STORE_APP,
@@ -31,10 +31,9 @@ interface TodoAppProps extends RouteComponentProps<any>, InjectedTranslateProps,
 
 interface TodoAppState { }
 
-@translate('main')
 @inject(STORE_APP, STORE_TODO, STORE_ROUTER)
 @observer
-export class TodoApp extends React.Component<TodoAppProps, TodoAppState> {
+class TodoApp extends React.Component<TodoAppProps, TodoAppState> {
   constructor(props: TodoAppProps, context: any) {
     super(props, context);
   }
@@ -111,3 +110,5 @@ export class TodoApp extends React.Component<TodoAppProps, TodoAppState> {
     );
   }
 }
+
+export default translate('main')(TodoApp);

@@ -5,13 +5,13 @@ import { Route, Switch, Redirect } from 'react-router';
 import { serialize } from 'serializr';
 import * as i18next from 'i18next';
 import { AboutPage } from 'app/pages';
-import { TodoApp } from 'app/containers/TodoApp';
+import TodoApp from 'app/containers/TodoApp';
 import { STORE_TODO } from 'app/constants';
 import * as locales from 'app/locales';
-import { LocalizedContainer } from 'app/containers/LocalizedContainer';
+import LocalizedContainer from 'app/containers/LocalizedContainer';
 import * as config from 'app/config';
 
-export { Root } from 'app/containers/Root';
+export { default as Root } from 'app/containers/Root';
 export { createStores } from 'app/stores';
 export * from 'app/config';
 

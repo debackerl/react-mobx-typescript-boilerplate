@@ -8,18 +8,20 @@ interface LocalizedContainerProps extends RouteComponentProps<any>, InjectedTran
   
 }
 
-export class _LocalizedContainer extends React.Component<LocalizedContainerProps, {}> {
+export class LocalizedContainer extends React.Component<LocalizedContainerProps, {}> {
   componentWillMount() {
-    const language = this.props.match.params.language || this.props.i18n.options.fallbackLng;
+    const language = this.props.match.params.language;
     this.props.i18n.changeLanguage(language);
   }
 
   shouldComponentUpdate(nextProps: LocalizedContainerProps, nextState: any) {
-    const language = nextProps.match.params.language || nextProps.i18n.options.fallbackLng;
+    const language = nextProps.match.params.language;
+
     if(this.props.match.params.language !== language) {
       nextProps.i18n.changeLanguage(language);
       return true;
     }
+
     return false;
   }
 
@@ -28,5 +30,4 @@ export class _LocalizedContainer extends React.Component<LocalizedContainerProps
   }
 }
 
-export const LocalizedContainer = withRouter(translate([])(_LocalizedContainer));
-export default LocalizedContainer;
+export default withRouter(translate([])(LocalizedContainer));

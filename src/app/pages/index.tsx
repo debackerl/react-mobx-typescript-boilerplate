@@ -1,7 +1,7 @@
 import * as style from './style.css'
 import * as React from 'react';
 import { Helmet } from "react-helmet";
-import { Layout } from 'app/containers/Layout';
+import Layout from 'app/containers/Layout';
 import About from './About.mdx';
 
 function buildPage(title: string, page: (props: any) => JSX.Element) : (props: any) => JSX.Element {
