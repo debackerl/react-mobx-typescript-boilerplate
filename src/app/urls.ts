@@ -10,7 +10,7 @@ function encode(value: any): string {
 	return null;
 }
 
-export function makeRoute(baseUrl: string, route: string, parameters: { [key: string]: any }, optionals: { [key: string]: any } = null) {
+export function makeRoute(baseUrl: string, route: string, parameters?: { [key: string]: any }, optionals?: { [key: string]: any }) {
 	if(!parameters) parameters = {};
 
 	let done = new Set<string>(), url = baseUrl + route.replace(/\/[:*]([\w_]+)/g, function(_, id) {
