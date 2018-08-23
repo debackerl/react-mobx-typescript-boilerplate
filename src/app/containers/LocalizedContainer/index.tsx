@@ -8,7 +8,12 @@ interface LocalizedContainerProps extends RouteComponentProps<any>, InjectedTran
   
 }
 
-export class _LocalizedContainer extends React.Component<LocalizedContainerProps, any> {
+export class _LocalizedContainer extends React.Component<LocalizedContainerProps, {}> {
+  componentWillMount() {
+    const language = this.props.match.params.language || this.props.i18n.options.fallbackLng;
+    this.props.i18n.changeLanguage(language);
+  }
+
   shouldComponentUpdate(nextProps: LocalizedContainerProps, nextState: any) {
     const language = nextProps.match.params.language || nextProps.i18n.options.fallbackLng;
     if(this.props.match.params.language !== language) {

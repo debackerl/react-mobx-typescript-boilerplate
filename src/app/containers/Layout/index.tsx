@@ -5,6 +5,7 @@ import { Alignment, Navbar, NavbarGroup, NavbarHeading, NavbarDivider, Button, P
 import { LinkButton } from 'app/components';
 import { baseUrl, languages } from 'app/config';
 import { makeRoute } from 'app/urls';
+import { InjectedTranslateProps, InjectedI18nProps, translate } from 'react-i18next';
 import '@blueprintjs/core/lib/css/blueprint.css';
 
 // https://medium.com/@ryandrewjohnson/adding-multi-language-support-to-your-react-redux-app-cf6e64250050
@@ -13,17 +14,18 @@ import '@blueprintjs/core/lib/css/blueprint.css';
 // https://www.npmjs.com/package/@lingui/react
 // https://www.npmjs.com/package/react-intl-universal
 
-interface LayoutProps extends RouteComponentProps<any> {
+interface LayoutProps extends RouteComponentProps<any>, InjectedTranslateProps, InjectedI18nProps {
   
 }
 
-class _Layout extends React.Component<LayoutProps, any> {
+class _Layout extends React.PureComponent<LayoutProps> {
   makeLocalizedRoute(language: string): string {
     const match = this.props.match;
     return makeRoute(baseUrl, match.path, Object.assign({}, match.params, {language}));
   }
 
   render() {
+    const { t } = this.props;
     const currentLanguage = this.props.match.params.language;
 
     const languageMenu = <Menu>
@@ -34,7 +36,7 @@ class _Layout extends React.Component<LayoutProps, any> {
       <div>
         <Navbar>
           <NavbarGroup>
-            <NavbarHeading>Todo Boilerplate</NavbarHeading>
+            <NavbarHeading>{t('title')}</NavbarHeading>
           </NavbarGroup>
           <NavbarGroup align={Alignment.RIGHT}>
             <LinkButton to="/" className="bp3-minimal" icon="home" text="Home" />
@@ -51,5 +53,5 @@ class _Layout extends React.Component<LayoutProps, any> {
   }
 }
 
-export const Layout = withRouter(_Layout);
+export const Layout = withRouter(translate('main')(_Layout));
 export default Layout;

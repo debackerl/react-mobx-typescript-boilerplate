@@ -15,7 +15,7 @@ import { I18nextProvider } from 'react-i18next';
 import * as serializeJS from 'serialize-javascript';
 import * as Negotiator from 'negotiator';
 import * as bcp47 from 'bcp47';
-import { Root, routes, createStores, extractState } from 'app';
+import { Root, routes, createStores, extractState, baseUrl } from 'app';
 
 // https://github.com/ctrlplusb/react-universally
 // https://github.com/ctrlplusb/react-async-bootstrapper
@@ -58,21 +58,9 @@ function localeDetector(allowed: Array<string>): (req: Request) => string {
   };
 }
 
-/*const history = createMemoryHistory();
-history.push('/');
-const stores = createStores(history);
-stores[STORE_TODO].addTodo(new TodoModel('Use React', true));
-stores[STORE_TODO].addTodo(new TodoModel('Use Mobx'));
-console.log(util.inspect(stores[STORE_TODO].todos[0]));
-//const state = JSON.stringify(stores[STORE_TODO]) as string;
-const state = serialize(stores[STORE_TODO]);
-console.log(state);
-const hydrated = deserialize(TodoStore, state) as TodoStore;
-autorun(() => console.log(hydrated.todos.length));
-console.log(util.inspect(hydrated.todos[0]));
-hydrated.clearCompleted();*/
-
 const handler = (req: Request, res: Response) => {
+  console.log('Render', req.url);
+
   // prepare MobX stores
   const history = createMemoryHistory();
   history.push(req.path);
@@ -89,7 +77,7 @@ const handler = (req: Request, res: Response) => {
     <Provider {...stores}>
       <I18nextProvider i18n={i18n}>
         <Root>
-          <StaticRouter location={req.url} basename="/" context={reactRouterContext}>
+          <StaticRouter location={req.url} basename={baseUrl} context={reactRouterContext}>
             {routes}
           </StaticRouter>
         </Root>
