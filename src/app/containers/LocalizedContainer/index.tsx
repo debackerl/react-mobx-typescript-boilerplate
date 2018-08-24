@@ -14,6 +14,9 @@ export class LocalizedContainer extends React.Component<LocalizedContainerProps,
     this.props.i18n.changeLanguage(language);
   }
 
+  // can't use getDerivedStateFromProps(props, state) yet because i18next seems to
+  // still use componentWillReceiveProps:
+  // Translate(LocalizedContainer) uses getDerivedStateFromProps() but also contains the following legacy lifecycles: componentWillReceiveProps
   UNSAFE_componentWillReceiveProps(nextProps: LocalizedContainerProps) {
     const language = nextProps.match.params.language;
 
