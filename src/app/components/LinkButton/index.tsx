@@ -1,4 +1,4 @@
-import * as React from 'react'
+/*import * as React from 'react'
 import * as PropTypes from 'prop-types';
 import { createLocation, LocationDescriptor } from "history";
 import { IButtonProps, Button } from '@blueprintjs/core';
@@ -61,3 +61,4 @@ export class LinkButton extends React.PureComponent<ILinkButtonProps> {
 }
 
 export default LinkButton;
+*/

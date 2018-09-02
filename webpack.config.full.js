@@ -22,6 +22,10 @@ var serverOutPath = __dirname;
 // otherwise it will be 'development'.
 
 // TODO:
+// Use Import on Demand:
+// https://ant.design/docs/react/getting-started#Import-on-Demand
+
+// TODO:
 // server build needs postcss module logic to get class names,
 // however, the output of postcss must be processed by extract text or mini css,
 // which is writing CSS to a file. This is to avoid using style-loader, which

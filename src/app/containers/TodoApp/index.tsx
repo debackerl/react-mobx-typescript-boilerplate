@@ -1,6 +1,4 @@
-import '@blueprintjs/core/lib/css/blueprint.css';
-import '@blueprintjs/datetime/lib/css/blueprint-datetime.css';
-import '@blueprintjs/select/lib/css/blueprint-select.css';
+import 'antd/dist/antd.css';
 
 import * as React from 'react';
 import { Helmet } from "react-helmet";
