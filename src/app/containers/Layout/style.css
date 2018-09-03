@@ -1,0 +1,32 @@
+.layout {
+  background-color: #f0f0f0;
+}
+
+.header {
+  box-shadow: 0 0 3px rgba(0,0,0,0.3);
+}
+
+@media (max-width: 575px) {
+  .header {
+    padding: 0 16px;
+  }
+}
+
+.content {
+  padding: 16px;
+  margin: 3px 0 0 0;
+  background-color: #fff;
+}
+
+@media (min-width: 575px) {
+  .content {
+    padding: 24px;
+    margin: 24px;
+  }
+}
+
+@media (max-width: 575px) {
+  .footer {
+    padding: 24px 16px;
+  }
+}

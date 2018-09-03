@@ -16,6 +16,15 @@ var sourcePath = path.join(__dirname, './src');
 var clientOutPath = path.join(__dirname, './dist');
 var serverOutPath = __dirname;
 
+var antDesign = {
+  // https://github.com/ant-design/ant-design/blob/master/components/style/themes/default.less
+  'primary-color': '#f57c00',
+  'body-background': '#f0f0f0',
+  'layout-header-background': '#fff',
+  'layout-body-background': '#fff',
+  'layout-footer-background': '#888'
+};
+
 // Documentation: https://webpack.js.org/configuration/
 
 // production mode will set process.env.NODE_ENV to 'production' in app,
@@ -94,6 +103,24 @@ module.exports = (env, argv) => {
               basenameAsNamespace: true
             }
           }
+        },
+        // less from modules
+        {
+          test: /node_modules.*\.less$/,
+          use: ExtractTextPlugin.extract({
+            fallback: 'style-loader',
+            use: [
+              {
+                loader: 'css-loader'
+              },{
+                loader: 'less-loader',
+                options: {
+                  modifyVars: antDesign,
+                  javascriptEnabled: true,
+                },
+              }
+            ]
+          })
         },
         // css from modules
         {

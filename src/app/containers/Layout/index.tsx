@@ -8,6 +8,7 @@ import { MenuProps as NavBarMenuProps } from 'app/containers/NavBar';
 import { NavBar } from 'app/containers';
 import { makeRoute } from 'app/urls';
 import { InjectedTranslateProps, InjectedI18nProps, translate } from 'react-i18next';
+import * as style from './style.css';
 
 // https://medium.com/@ryandrewjohnson/adding-multi-language-support-to-your-react-redux-app-cf6e64250050
 // https://blog.alexdevero.com/react-context-multilingual-website-pt1/
@@ -41,7 +42,7 @@ class Layout extends React.PureComponent<LayoutProps> {
         triggerSubMenuAction="click"
         forceSubMenuRender={true}
         mode={mobileVersion ? 'vertical': 'horizontal'}
-        theme={mobileVersion ? 'light' : 'dark'}
+        theme="light"
         selectedKeys={[route, currentLanguage]}>
       <Ant.Menu.Item key="/:language"><Link onClick={onLinkClick} to={pathTo('/:language')}>Home</Link></Ant.Menu.Item>
       <Ant.Menu.Item key="/:language/about"><Link onClick={onLinkClick} to={pathTo('/:language/about')}>About</Link></Ant.Menu.Item>
@@ -53,16 +54,16 @@ class Layout extends React.PureComponent<LayoutProps> {
     </LooseMenu>;
 
     return (
-      <Ant.Layout>
-        <Ant.Layout.Header>
+      <Ant.Layout className={style.layout}>
+        <Ant.Layout.Header className={style.header}>
           <NavBar title={t('title')} menuFactory={menu} />
         </Ant.Layout.Header>
         
-        <Ant.Layout.Content>
+        <Ant.Layout.Content className={style.content}>
           {this.props.children}
         </Ant.Layout.Content>
         
-        <Ant.Layout.Footer>
+        <Ant.Layout.Footer className={style.footer}>
           Footer
         </Ant.Layout.Footer>
       </Ant.Layout>

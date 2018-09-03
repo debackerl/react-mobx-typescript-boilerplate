@@ -1,4 +1,4 @@
-import 'antd/dist/antd.css';
+import 'antd/dist/antd.less';
 
 import * as React from 'react';
 import { Helmet } from "react-helmet";
