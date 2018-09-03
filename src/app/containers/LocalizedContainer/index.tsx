@@ -1,8 +1,18 @@
 import * as React from 'react';
 import { InjectedTranslateProps, InjectedI18nProps, translate } from 'react-i18next';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
+import { LocaleProvider } from 'antd';
+import { Locale } from 'antd/lib/locale-provider';
+import en from 'antd/lib/locale-provider/en_US';
+import fr from 'antd/lib/locale-provider/fr_FR';
 
 // Gets 'language' param from react-router and feed it to i18next.
+
+interface LocaleProviders { [key: string]: Locale; }
+const antLocaleProviders: LocaleProviders = {
+  en: en,
+  fr: fr
+};
 
 interface LocalizedContainerProps extends RouteComponentProps<any>, InjectedTranslateProps, InjectedI18nProps {
   
@@ -26,7 +36,11 @@ export class LocalizedContainer extends React.Component<LocalizedContainerProps,
   }
 
   render() {
-    return this.props.children;
+    const language = this.props.match.params.language;
+    const children = this.props.children as any as React.ReactElement<any>;
+    return <LocaleProvider locale={antLocaleProviders[language]}>
+      {children}
+    </LocaleProvider>;
   }
 }
 

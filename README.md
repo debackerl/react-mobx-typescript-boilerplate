@@ -1,15 +1,14 @@
-# Frontend Boilerplate with React, MobX & TypeScript
+# Frontend Boilerplate with Ant Design on top of React, MobX & TypeScript
 
 A bare minimum react-mobx-webpack-typescript boilerplate with TodoMVC example.
 
-Note that this project does not include **Server-Side Rendering**,  **Testing Frameworks** and other stuffs that makes the package unnecessarily complicated.
+Note that this project does not include **Testing Frameworks**, Jest would be recommended.
 
 Ideal for creating React apps from the scratch.
 
-See also: [react-redux-typescript-boilerplate](https://github.com/rokoroku/react-redux-typescript-boilerplate)
-
 ## Contains
 
+- [x] Server-Side Rendering
 - [x] [Typescript](https://www.typescriptlang.org/)
 - [x] [React](https://facebook.github.io/react/)
 - [x] [React Router](https://github.com/ReactTraining/react-router)
@@ -18,6 +17,10 @@ See also: [react-redux-typescript-boilerplate](https://github.com/rokoroku/react
 - [x] [Mobx React Router](https://github.com/alisd23/mobx-react-router/)
 - [x] [Mobx React Devtools](https://github.com/mobxjs/mobx-react-devtools)
 - [x] [TodoMVC example](http://todomvc.com)
+- [x] [Ant Design](http://ant.design)
+- [x] [MDXC](https://github.com/jamesknelson/mdxc)
+- [x] [i18next](https://www.i18next.com/)
+- [x] [Serializr state hydratation](https://github.com/mobxjs/serializr)
 
 ### Build tools
 
@@ -31,7 +34,7 @@ See also: [react-redux-typescript-boilerplate](https://github.com/rokoroku/react
 - [x] [React Hot Loader](https://github.com/gaearon/react-hot-loader)
 - [x] [ExtractText Plugin](https://github.com/webpack/extract-text-webpack-plugin)
 - [x] [HTML Webpack Plugin](https://github.com/ampedandwired/html-webpack-plugin)
-
+- [x] [TSLint](https://palantir.github.io/tslint/)
 
 ## Setup
 
