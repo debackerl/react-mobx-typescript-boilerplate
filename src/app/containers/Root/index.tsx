@@ -4,6 +4,7 @@ import * as React from 'react';
 export default class Root extends React.PureComponent<{}> {
   renderDevTool() {
     if (process.env.NODE_ENV !== 'production' && window) {
+      // tslint:disable-next-line
       const DevTools = require('mobx-react-devtools').default;
       return <DevTools />;
     }

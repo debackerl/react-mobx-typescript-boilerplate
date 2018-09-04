@@ -1,7 +1,5 @@
-import * as React from 'react';
 import { baseUrl } from './config';
 import { makeRoute } from './urls';
-import { Link } from 'react-router-dom';
 
 // typed version of https://www.npmjs.com/package/react-app-location
 
@@ -18,9 +16,5 @@ export class Location<T> implements ILocation {
 
   toUrl(parameters: Partial<T>, optionals: Partial<T>): string {
     return makeRoute(baseUrl, this.path, parameters, optionals);
-  }
-
-  toLink(parameters: Partial<T>, optionals: Partial<T>): React.ReactElement<any> {
-    return <Link to={this.toUrl(parameters, optionals)} />;
   }
 }
