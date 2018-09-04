@@ -10,6 +10,7 @@ import { STORE_TODO } from 'app/constants';
 import * as locales from 'app/locales';
 import LocalizedContainer from 'app/containers/LocalizedContainer';
 import * as config from 'app/config';
+import { LOCATION_ABOUT, LOCATION_HOME } from 'app/constants/locations';
 
 export { default as Root } from 'app/containers/Root';
 export { createStores } from 'app/stores';
@@ -36,8 +37,8 @@ export const routes =
     <Route path="/:language">
       <LocalizedContainer>
         <Switch>
-          <Route path="/:language/about" component={AboutPage} />
-          <Route path="/:language" component={TodoApp} />
+          <Route path={LOCATION_ABOUT.path} component={AboutPage} />
+          <Route path={LOCATION_HOME.path} component={TodoApp} />
         </Switch>
       </LocalizedContainer>
     </Route>

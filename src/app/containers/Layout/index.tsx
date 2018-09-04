@@ -7,6 +7,7 @@ import { baseUrl, languages } from 'app/config';
 import { MenuProps as NavBarMenuProps } from 'app/containers/NavBar';
 import { NavBar } from 'app/containers';
 import { makeRoute } from 'app/urls';
+import { LOCATION_HOME, LOCATION_ABOUT } from 'app/constants/locations';
 import { InjectedTranslateProps, InjectedI18nProps, translate } from 'react-i18next';
 import * as style from './style.css';
 
@@ -29,12 +30,12 @@ class Layout extends React.PureComponent<LayoutProps> {
   }
 
   static links: {[key: string]: string} = {
-    '/:language': 'home',
-    '/:language/about': 'about'
+    [LOCATION_HOME.path]: 'home',
+    [LOCATION_ABOUT.path]: 'about'
   };
 
   render() {
-    const { t, pathTo } = this.props;
+    const { t, urlTo } = this.props;
     const currentLanguage = this.props.match.params.language;
     const route = this.props.match.path;
 
@@ -44,8 +45,8 @@ class Layout extends React.PureComponent<LayoutProps> {
         mode={mobileVersion ? 'vertical': 'horizontal'}
         theme="light"
         selectedKeys={[route, currentLanguage]}>
-      <Ant.Menu.Item key="/:language"><Link onClick={onLinkClick} to={pathTo('/:language')}>Home</Link></Ant.Menu.Item>
-      <Ant.Menu.Item key="/:language/about"><Link onClick={onLinkClick} to={pathTo('/:language/about')}>About</Link></Ant.Menu.Item>
+      <Ant.Menu.Item key={LOCATION_HOME.path}><Link onClick={onLinkClick} to={urlTo(LOCATION_HOME)}>Home</Link></Ant.Menu.Item>
+      <Ant.Menu.Item key={LOCATION_ABOUT.path}><Link onClick={onLinkClick} to={urlTo(LOCATION_ABOUT)}>About</Link></Ant.Menu.Item>
       <Ant.Menu.SubMenu title={<Ant.Icon type="flag"/>}>
         {languages.map(lng => <Ant.Menu.Item key={lng.language}>
           <Link onClick={onLinkClick} to={this.makeLocalizedRoute(lng.language)}>{lng.label}</Link>

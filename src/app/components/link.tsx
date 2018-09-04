@@ -1,21 +1,22 @@
 import * as React from 'react';
 import { RouteComponentProps, withRouter } from "react-router";
 import { baseUrl } from 'app/config';
+import { ILocation } from 'app/location';
 import { makeRoute } from 'app/urls';
 
 export interface LinkerProp {
-  pathTo(route: string, parameters?: any): string;
+  urlTo(location: ILocation, parameters?: any): string;
 }
 
 const link = <P extends LinkerProp & RouteComponentProps<any>>(Component: React.ComponentType<P>) => withRouter(
   class Linker extends React.PureComponent<Exclude<P, LinkerProp>> {
-    pathTo = (route: string, parameters?: any) => (
-      makeRoute(baseUrl, route, parameters, this.props.match.params)
+    urlTo = (location: ILocation, parameters?: any) => (
+      makeRoute(baseUrl, location.path, parameters, this.props.match.params)
     );
 
     render() {
       return (
-        <Component pathTo={this.pathTo} {...this.props} />
+        <Component urlTo={this.urlTo} {...this.props} />
       );
     }
   }
