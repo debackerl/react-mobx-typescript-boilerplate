@@ -29,27 +29,24 @@ class Layout extends React.PureComponent<LayoutProps> {
     return makeRoute(baseUrl, match.path, Object.assign({}, match.params, {language}));
   }
 
-  static links: {[key: string]: string} = {
-    [LOCATION_HOME.path]: 'home',
-    [LOCATION_ABOUT.path]: 'about'
-  };
-
   render() {
     const { t, urlTo } = this.props;
     const currentLanguage = this.props.match.params.language;
-    const route = this.props.match.path;
+    const path = this.props.match.path;
 
-    const menu = ({ mobileVersion, onLinkClick }: NavBarMenuProps) => <LooseMenu
+    const menu = ({ mobileVersion }: NavBarMenuProps) => <LooseMenu
         triggerSubMenuAction="click"
         forceSubMenuRender={true}
         mode={mobileVersion ? 'vertical': 'horizontal'}
         theme="light"
-        selectedKeys={[route, currentLanguage]}>
-      <Ant.Menu.Item key={LOCATION_HOME.path}><Link onClick={onLinkClick} to={urlTo(LOCATION_HOME)}>Home</Link></Ant.Menu.Item>
-      <Ant.Menu.Item key={LOCATION_ABOUT.path}><Link onClick={onLinkClick} to={urlTo(LOCATION_ABOUT)}>About</Link></Ant.Menu.Item>
+        selectedKeys={[path, currentLanguage]}>
+
+      <Ant.Menu.Item key={LOCATION_HOME.path}><Link to={urlTo(LOCATION_HOME)}>Home</Link></Ant.Menu.Item>
+      <Ant.Menu.Item key={LOCATION_ABOUT.path}><Link to={urlTo(LOCATION_ABOUT)}>About</Link></Ant.Menu.Item>
+
       <Ant.Menu.SubMenu title={<Ant.Icon type="flag"/>}>
         {languages.map(lng => <Ant.Menu.Item key={lng.language}>
-          <Link onClick={onLinkClick} to={this.makeLocalizedRoute(lng.language)}>{lng.label}</Link>
+          <Link to={this.makeLocalizedRoute(lng.language)}>{lng.label}</Link>
         </Ant.Menu.Item>)}
       </Ant.Menu.SubMenu>
     </LooseMenu>;

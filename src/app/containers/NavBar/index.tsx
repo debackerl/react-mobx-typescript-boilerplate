@@ -6,7 +6,6 @@ import * as style from './style.css';
 import { Row } from 'antd';
 
 export interface MenuProps {
-  onLinkClick?: () => void;
   mobileVersion?: boolean;
 }
 
@@ -20,7 +19,6 @@ interface NavBarProps {
 
 interface NavBarState {
   viewportWidth: number;
-  menuVisible: boolean;
 }
 
 class NavBar extends React.Component<NavBarProps, NavBarState> {
@@ -31,8 +29,7 @@ class NavBar extends React.Component<NavBarProps, NavBarState> {
   };
 
   state: NavBarState = {
-    viewportWidth: 0,
-    menuVisible: false,
+    viewportWidth: 0
   };
 
   componentDidMount() {
@@ -43,10 +40,6 @@ class NavBar extends React.Component<NavBarProps, NavBarState> {
   componentWillUnmount() {
     window.removeEventListener('resize', this.saveViewportDimensions);
   }
-
-  handleMenuVisibility = (menuVisible: boolean) => {
-    this.setState({ menuVisible });
-  };
 
   saveViewportDimensions = throttle(() => {
     this.setState({
@@ -76,15 +69,12 @@ class NavBar extends React.Component<NavBarProps, NavBarState> {
           </div>
           <Popover
             content={<MenuMarkup
-              onLinkClick={() => this.handleMenuVisibility(false)}
               mobileVersion
               // className='to-override-mobile-menu-class'
               />
             }
             trigger="click"
             placement="bottom"
-            visible={this.state.menuVisible}
-            onVisibleChange={this.handleMenuVisibility}
           >
             <Icon
               className={style.iconHamburger}
