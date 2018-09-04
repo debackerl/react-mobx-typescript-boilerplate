@@ -1,5 +1,6 @@
 import * as React from 'react';
-import * as express from "express";
+import * as express from 'express';
+import * as http from 'http';
 import { readFileSync } from 'fs';
 import * as cheerio from 'cheerio';
 import { useStrict } from 'mobx';
@@ -16,6 +17,7 @@ import * as serializeJS from 'serialize-javascript';
 import * as Negotiator from 'negotiator';
 import * as bcp47 from 'bcp47';
 import { Root, routes, createStores, extractState, baseUrl } from 'app';
+import { Server } from 'http';
 
 // https://github.com/ctrlplusb/react-universally
 // https://github.com/ctrlplusb/react-async-bootstrapper
@@ -57,6 +59,36 @@ function localeDetector(allowed: Array<string>): (req: Request) => string {
     return locale;
   };
 }
+
+const shutdownMiddleware = (server: Server, timeout: number) => {
+  let shuttingDown = false;
+
+  const shutdown = () => {
+    if(shuttingDown) return;
+    shuttingDown = true;
+
+    console.log('Shutting down...');
+
+    setTimeout(() => {
+      console.log('Forcing server shutdown.');
+      process.exit(1);
+    }, timeout);
+
+    server.close(() => {
+      console.log('All connections closed.');
+      process.exit(0);
+    });
+  };
+
+  process.on('SIGINT', shutdown); // sent by CTRL-C
+  process.on('SIGTERM', shutdown); // sent by "docker stop" command
+
+  return (req: Request, res: Response, next: NextFunction) => {
+    if(!shuttingDown) return next();
+    res.set('Connection', 'close');
+    res.status(503).send('Server is shutting down.');
+  };
+};
 
 const handler = (req: Request, res: Response) => {
   console.log('Render', req.url);
@@ -123,26 +155,32 @@ const handler = (req: Request, res: Response) => {
 
 // create HTTP server
 
-const server = express();
-server.disable('x-powered-by');
+const httpApp = express();
+const httpServer = http.createServer(httpApp);
+
+httpApp.disable('x-powered-by');
+
+// handle graceful shutdown
+
+httpApp.use(shutdownMiddleware(httpServer, 30000));
 
 // serve static files
 
-server.use('/dist', express.static('dist'));
+httpApp.use('/dist', express.static('dist'));
 
 // redirect unspecified language
 
 const detectLocale = localeDetector(['en', 'fr']);
 
-server.get('/', (req: Request, res: Response) => {
+httpApp.get('/', (req: Request, res: Response) => {
   const lng = detectLocale(req);
   res.redirect(301, '/' + lng);
 });
 
 // serve React pages
 
-server.get('*', handler);
+httpApp.get('*', handler);
 
 // start server
 
-server.listen(config.httpPort);
+httpServer.listen(config.httpPort);
