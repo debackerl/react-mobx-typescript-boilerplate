@@ -7,7 +7,7 @@ import { RouteComponentProps } from 'react-router';
 import { translate, InjectedTranslateProps, InjectedI18nProps } from 'react-i18next';
 import { Header, TodoList, Footer } from 'app/components';
 import { TodoModel } from 'app/models';
-import Layout from 'app/containers/Layout';
+import Layout from 'app/components/Layout';
 import { AppStore, TodoStore, RouterStore } from 'app/stores';
 import {
   STORE_APP,
