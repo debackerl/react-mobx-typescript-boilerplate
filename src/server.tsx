@@ -11,12 +11,11 @@ import { StaticRouter } from 'react-router'
 import { renderToString } from 'react-dom/server'
 import { Helmet } from 'react-helmet';
 import bootstrap from 'react-async-bootstrapper';
-import * as i18next from 'i18next';
 import { I18nextProvider } from 'react-i18next';
 import * as serializeJS from 'serialize-javascript';
 import * as Negotiator from 'negotiator';
 import * as bcp47 from 'bcp47';
-import { Root, routes, createStores, extractState, baseUrl } from 'app';
+import { Root, routes, createI18n, createStores, extractState, baseUrl } from 'app';
 import { Server } from 'http';
 
 // https://github.com/ctrlplusb/react-universally
@@ -90,7 +89,7 @@ const shutdownMiddleware = (server: Server, timeout: number) => {
   };
 };
 
-const handler = (req: Request, res: Response) => {
+const handler = async (req: Request, res: Response) => {
   console.log('Render', req.url);
 
   // prepare MobX stores
@@ -98,9 +97,9 @@ const handler = (req: Request, res: Response) => {
   history.push(req.path);
   const stores = createStores(history);
 
-  const reactRouterContext: any = {};
+  const i18n = await createI18n();
 
-  const i18n = i18next.cloneInstance({ initImmediate: false });
+  const reactRouterContext: any = {};
 
   // in a StaticRouter, all <Link to="..."> will be translated as <a href="...">
   // https://github.com/ReactTraining/react-router/blob/master/packages/react-router/docs/api/StaticRouter.md
